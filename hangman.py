@@ -1,6 +1,6 @@
 import random
 
-word_list="hello jazz soccer school money python".split()
+word_list="hello jazz soccer school money python paper rain bottle pencil remote book hangman".split()
 
 
 def choose_word():
