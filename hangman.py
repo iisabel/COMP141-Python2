@@ -1,6 +1,6 @@
 import random
 
-word_list="hello jazz soccer school money python paper rain bottle pencil remote book hangman".split()
+word_list="hello tree flower bread pizza jazz soccer school money python paper rain bottle pencil remote book hangman".split()
 
 
 def choose_word():
@@ -9,31 +9,60 @@ def choose_word():
 
 
 def play(word):
-    letter_length = "_" * len(word) #provides '-' where an unknown letter is
-    guess = False
-    guessed_letters = []                #all guessed letters go into array, so they can be checked later to see if they have already been used
-    guessed_words = []                  #used when user guesses work right
-    tries = 6                           #user gets 6 tries
+    letter_length = "_" * len(word) 
+    guessed = False
+    guessed_letters = []                
+    guessed_words = []                  
+    tries = 6                           
     print("Let's play Hangman!")
     name=str(input("What is your name? "))
     print("Well lets get started ", name)
-    print(hangman_graphic(tries))       #will display hangman when game starts
-    print(letter_length)                #display letter length using '-'
+    print(hangman_graphic(tries))       
+    print(letter_length)               
     print("\n")
 
-    while not guess and tries > 0:   #this while loop will include all senarios that can happen during the game (loop will end whne there are 0 tries and guesses left 
+    while not guessed and tries > 0:   
+        guess = input("Please guess a letter or word: ").upper()
+        if len(guess) == 1 and guess.isalpha():
+            if guess in guessed_letters:
+                print("You already guessed the letter", guess)
+            elif guess not in word:
+                print(guess, "is not in the word.")
+                tries -= 1
+                guessed_letters.append(guess)
+            else:
+                print("Good job,", guess, "is in the word!")
+                guessed_letters.append(guess)
+                letters_listed = list(letter_length)
+                spaces = [i for i, letter in enumerate(word) if letter == guess]
+                for index in spaces:
+                    letters_listed[index] = guess
+                letter_length = "".join(letters_listed)
+                if "_" not in letter_length:
+                    guessed = True
+        elif len(guess) == len(word) and guess.isalpha():
+            if guess in guessed_words:
+                print("You already guessed the word", guess)
+            elif guess != word:
+                print(guess, "is not the word.")
+                tries -= 1
+                guessed_words.append(guess)
+            else:
+                guessed = True
+                letter_length = word
+        else:
+            print("Not a valid guess.")
+        print(hangman_graphic(tries))
+        print(letter_length)
+        print("\n")
+    if guessed:
+        print("Congrats, you guessed the word! You win!")
+    else:
+        print("Sorry, you ran out of tries. The word was " + word + ". Maybe next time!")
+                
+        
 
-
-        #turn users guess into uppercase 
-        #if statement if user guessed a repeated letter
-            #if user guesses incorrect letter
-            #if user guesses something other than a letter
-            #if user guesses a correct letter
-        #if user guesses correct word
-
-
-
-def hangman_graphic(tries):             #lists out the different stages of getting a word wrong (will be referred to in while loop)
+def hangman_graphic(tries):             
     levels = ["""                       
                    --------
                    |      |
@@ -94,10 +123,12 @@ def hangman_graphic(tries):             #lists out the different stages of getti
     return levels[tries]
 
 
-def main():                     #this will be the main function, used to get a word and ask if the user wants to play again
-    word = get_word()
+def main():                     
+    word = choose_word()
     play(word)
     while input("Would you like to play again? 'Y' for yes or 'N' for no").upper() == "Y":
-        word = get_word()
+        word = choose_word()
         play(word)
-
+        
+if __name__ == "__main__":
+    main()
