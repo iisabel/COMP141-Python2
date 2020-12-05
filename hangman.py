@@ -51,10 +51,12 @@ def play(word):
                 guessed = True
                 letter_length = word
         else:                                                                   #Guesses something other than a letter    
-            print("Not a valid guess.")                                                 
-            print(hangman_graphic(tries))
-            print(letter_length)
-            print("\n")
+            print("Not a valid guess.")
+
+        print(hangman_graphic(tries))
+        print(letter_length)
+        print("\n")
+
     if guessed:
         print("Congrats, you guessed the word! You win!")                       #If user wins
     else:
